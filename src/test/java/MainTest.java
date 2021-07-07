@@ -1,5 +1,6 @@
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.lucene.util.RamUsageEstimator;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
@@ -7,7 +8,7 @@ import java.util.*;
 public class MainTest {
     @Test
     public void testAll() {
-        // 200 millis numbers to test
+        // 2000 万个数以测试
         int size = 20 * 1000 * 1000;
 
         long[] longArray = new long[size];
@@ -38,9 +39,7 @@ public class MainTest {
         while (System.currentTimeMillis() < cur + 5000) {
             int ix = RandomUtils.nextInt() % longArray.length;
 
-            if (longArray[ix] != zippedLongAry.get(ix)) {
-                throw new IllegalStateException("test failed");
-            }
+            Assert.assertEquals(longArray[ix], zippedLongAry.get(ix));
 
             count++;
         }
@@ -63,9 +62,7 @@ public class MainTest {
         while (System.currentTimeMillis() < cur + 5000) {
             int ix = RandomUtils.nextInt() % longArray.length;
 
-            if (intArray[ix] != zippedIntAry.get(ix)) {
-                throw new IllegalStateException("test failed");
-            }
+            Assert.assertEquals(intArray[ix], zippedIntAry.get(ix));
 
             count++;
         }
@@ -79,17 +76,13 @@ public class MainTest {
             ZippedLongArray.ZippedIterator longIter = zippedLongAry.getIterator(ix, zippedLongAry.size() - ix);
             int i = ix;
             while (longIter.hasNext()) {
-                if (longArray[i++] != longIter.nextLong()) {
-                    throw new IllegalStateException("test failed");
-                }
+                Assert.assertEquals(longArray[i++], longIter.nextLong());
             }
 
             ZippedLongArray.ZippedIterator intIter = zippedIntAry.getIterator(ix, zippedIntAry.size() - ix);
             i = ix;
             while (intIter.hasNext()) {
-                if (intArray[i++] != intIter.nextLong()) {
-                    throw new IllegalStateException("test failed");
-                }
+                Assert.assertEquals(intArray[i++], intIter.nextLong());
             }
         }
 
